@@ -7,7 +7,15 @@ import 'package:flutter/material.dart';
 @immutable
 class DocumentFile {
   /// The name of the document. `DISPLAY_NAME` - The display name of the document.
+  /// For some SAF providers (like Termux), this may be stripped of file extensions.
+  /// Use [displayName] for the raw provider name and [fileName] for the computed name with extension.
   final String name;
+
+  /// The raw display name from the SAF provider (may be stripped of extensions by some providers).
+  final String? displayName;
+
+  /// The computed filename that includes the extension when the display name doesn't have one.
+  final String? fileName;
 
   /// Represents the MIME type of the document.
   /// If the MIME type is not available, this will be `unknown`.
@@ -51,6 +59,8 @@ class DocumentFile {
   const DocumentFile({
     required this.uri,
     this.name = 'unknown',
+    this.displayName,
+    this.fileName,
     this.type = 'unknown',
     this.size = 0,
     this.lastModified = 0,
@@ -67,6 +77,8 @@ class DocumentFile {
   ///
   /// The [map] parameter must contain the following keys:
   /// - `name`: [String] representing the document's display name.
+  /// - `displayName`: [String?] representing the raw display name from the provider.
+  /// - `fileName`: [String?] representing the computed filename with extension.
   /// - `type`: [String] representing the MIME type of the document.
   /// - `uri`: [String] representation of the document URI.
   /// - `size`: [int] representing the size of the document in bytes or count of documents in the directory.
@@ -81,6 +93,8 @@ class DocumentFile {
   /// Returns a [DocumentFile] instance.
   factory DocumentFile.fromMap(Map<String, dynamic> map) => DocumentFile(
         name: map['name'] as String,
+        displayName: map['displayName'] as String?,
+        fileName: map['fileName'] as String?,
         type: map['type'] as String? ?? 'unknown',
         uri: map['uri'] as String,
         size: map['size'] as int,
@@ -119,6 +133,8 @@ class DocumentFile {
   /// Converts the [DocumentFile] instance to a map.
   Map<String, dynamic> toMap() => <String, dynamic>{
         'name': name,
+        'displayName': displayName,
+        'fileName': fileName,
         'type': type,
         'uri': uri,
         'size': size,
@@ -134,7 +150,7 @@ class DocumentFile {
 
   @override
   String toString() =>
-      'DocumentFile(name: $name, type: $type, uri: $uri, size: $size, lastModified: $lastModified,'
+      'DocumentFile(name: $name, displayName: $displayName, fileName: $fileName, type: $type, uri: $uri, size: $size, lastModified: $lastModified,'
       ' lastModifiedDate: $lastModifiedDate, exists: $exists, isDirectory: $isDirectory, isFile: $isFile, '
       'canRead: $canRead, canWrite: $canWrite, canDelete: $canDelete, canCreate: $canCreate, '
       'canThumbnail: $canThumbnail)';
@@ -146,6 +162,8 @@ class DocumentFile {
       identical(this, other) ||
       other is DocumentFile &&
           name == other.name &&
+          displayName == other.displayName &&
+          fileName == other.fileName &&
           type == other.type &&
           uri == other.uri &&
           size == other.size &&
@@ -153,5 +171,5 @@ class DocumentFile {
           exists == other.exists;
 
   @override
-  int get hashCode => Object.hash(name, type, uri, size, lastModified, exists);
+  int get hashCode => Object.hash(name, displayName, fileName, type, uri, size, lastModified, exists);
 }

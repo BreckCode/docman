@@ -70,37 +70,37 @@ Future<void> dirOperationsExample() async {
 **API documentation** is available at [pub.dev](https://pub.dev/documentation/docman/latest/).
 All public classes and methods are well-documented.
 
-**Note:** To try the demos shown in the images run the [***example***](/example) included in this plugin.
+**Note:** To try the demos shown in the images run the [**_example_**](/example) included in this plugin.
 
 ### <ins>Table of Contents</ins>
 
 1. 🛠️ [**Installation**](#installation)
-2. 👆 [**Picker**](#-picker)  (🖼️ [*see examples*](#picker-examples))
-    - [Pick directory](#pick-directory)
-    - [Pick documents](#pick-documents)
-    - [Pick files](#pick-files)
-    - [Pick visualMedia](#pick-visualmedia)
-3. 📂 [**App Directories**](#-app-directories) (🖼️ [*see examples*](#app-directories-examples))
-    - [Supported app directories](#supported-app-directories)
-    - [Get all directories at once](#get-all-directories-at-once)
-    - ♻️ [Plugin Cache cleaner](#plugin-cache-cleaner)
-4. 🛡️ [**Persisted permissions**](#persisted-permissions) (🖼️ [*see examples*](#persisted-permissions-examples))
-    - [PersistedPermission data class](#persistedpermission-class)
-    - [List/Stream permissions](#list--stream-permissions)
-    - [List/Stream Documents with permissions](#list--stream-documents-with-permissions)
-    - [Release & Release all actions](#release--release-all-actions)
-    - [Get Uri permission status](#get-uri-permission-status)
-    - ♻️ [Validate permissions](#validate-permissions)
-5. 📄 [**DocumentFile**](#-documentfile) (🖼️ [*see examples*](#documentfile-examples))
-    - [Instantiate DocumentFile](#instantiate-documentfile)
-    - [Activity methods](#documentfile-activity-methods)
-    - [Events / Stream methods](#documentfile-events--stream-methods)
-    - [Action methods](#documentfile-action-methods)
-    - 🧩 [DocumentThumbnail](#-documentthumbnail-class)
-    - [Unsupported methods](#unsupported-methods)
-6. 🗂️ [**DocumentsProvider**](#documents-provider) (🖼️ [*see examples*](#documents-provider-examples))
-    - [Setup DocumentsProvider](#setup-documentsprovider)
-    - [DocumentsProvider example](#provider-json-example)
+2. 👆 [**Picker**](#-picker) (🖼️ [_see examples_](#picker-examples))
+   - [Pick directory](#pick-directory)
+   - [Pick documents](#pick-documents)
+   - [Pick files](#pick-files)
+   - [Pick visualMedia](#pick-visualmedia)
+3. 📂 [**App Directories**](#-app-directories) (🖼️ [_see examples_](#app-directories-examples))
+   - [Supported app directories](#supported-app-directories)
+   - [Get all directories at once](#get-all-directories-at-once)
+   - ♻️ [Plugin Cache cleaner](#plugin-cache-cleaner)
+4. 🛡️ [**Persisted permissions**](#persisted-permissions) (🖼️ [_see examples_](#persisted-permissions-examples))
+   - [PersistedPermission data class](#persistedpermission-class)
+   - [List/Stream permissions](#list--stream-permissions)
+   - [List/Stream Documents with permissions](#list--stream-documents-with-permissions)
+   - [Release & Release all actions](#release--release-all-actions)
+   - [Get Uri permission status](#get-uri-permission-status)
+   - ♻️ [Validate permissions](#validate-permissions)
+5. 📄 [**DocumentFile**](#-documentfile) (🖼️ [_see examples_](#documentfile-examples))
+   - [Instantiate DocumentFile](#instantiate-documentfile)
+   - [Activity methods](#documentfile-activity-methods)
+   - [Events / Stream methods](#documentfile-events--stream-methods)
+   - [Action methods](#documentfile-action-methods)
+   - 🧩 [DocumentThumbnail](#-documentthumbnail-class)
+   - [Unsupported methods](#unsupported-methods)
+6. 🗂️ [**DocumentsProvider**](#documents-provider) (🖼️ [_see examples_](#documents-provider-examples))
+   - [Setup DocumentsProvider](#setup-documentsprovider)
+   - [DocumentsProvider example](#provider-json-example)
 7. 🗃️ [**DocMan Exceptions**](#docman-exceptions)
 8. 📦 [**Changelog**](#-changelog)
 9. ⁉️ [**Help & Questions**](#help--questions)
@@ -131,14 +131,13 @@ Allows picking a directory from the device storage. You can specify the initial 
 
 > [!WARNING]
 > When picking directory, it also grants access to it.
-> On **Android 11 (API level 30)** and higher it's <ins>***impossible***</ins> to grant access to **root directories of
-sdCard, download folder**, also it's <ins>***impossible***</ins> to select any file from:
+> On **Android 11 (API level 30)** and higher it's <ins>**_impossible_**</ins> to grant access to **root directories of
+> sdCard, download folder**, also it's <ins>**_impossible_**</ins> to select any file from:
 > **Android/data/** directory and all subdirectories, **Android/obb/** directory and all subdirectories.
 >
 > [All restrictions are described here at developer.android.com](https://developer.android.com/training/data-storage/shared/documents-files#document-tree-access-restrictions)
 
-> [!NOTE]
-> `initDir`: Option to set initial directory uri for picker is available since Android 8.0 (Api 26).
+> [!NOTE] > `initDir`: Option to set initial directory uri for picker is available since Android 8.0 (Api 26).
 > If the option is not available, the picker will start from the default directory.
 
 ```dart
@@ -217,17 +216,19 @@ Future<List<File>> pickVisualMedia() =>
 ```
 
 ---
+
 <a name="picker-examples"></a>
+
 <details>
 
 <summary style="font-weight: bold">🖼️ Picker examples (click for expand/collapse)</summary>
 
 |                                       Picking directory                                       |                                       Picking documents                                       |
-|:---------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| :-------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/25594ef3-2fbc-4ae6-aabf-7d440e4a77ce" /> | <img src="https://github.com/user-attachments/assets/5d787744-a3df-4697-a0ed-59f00d050e17" /> |
 
 |                                         Picking files                                         |                                      Picking visualMedia                                      |
-|:---------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| :-------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/b9556dde-280d-4429-a486-7d4e70308ad4" /> | <img src="https://github.com/user-attachments/assets/6241bbfc-1f00-47d5-b1c9-8dc1cf250ce7" /> |
 
 </details>
@@ -311,13 +312,15 @@ Future<bool> clearPluginCache() => DocMan.dir.clearCache();
 ```
 
 ---
+
 <a name="app-directories-examples"></a>
+
 <details>
 
 <summary style="font-weight: bold">🖼️ App Directories examples (click for expand/collapse)</summary>
 
 |                                        Get directories                                        |
-|:---------------------------------------------------------------------------------------------:|
+| :-------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/4675fddc-45f5-4008-9d5a-a61dafba1dc1" /> |
 
 </details>
@@ -338,8 +341,9 @@ or use the helper: `DocMan.perms` to manage permissions.
 
 > [!CAUTION]
 > Persistable permissions have limitations:
->  - Limited to **128** permissions per app for **Android 10** and below
->  - Limited to **512** permissions per app for **Android 11** and above
+>
+> - Limited to **128** permissions per app for **Android 10** and below
+> - Limited to **512** permissions per app for **Android 11** and above
 
 #### **PersistedPermission class**
 
@@ -469,13 +473,15 @@ Future<bool> validatePermissions() => DocMan.perms.validateList();
 ```
 
 ---
+
 <a name="persisted-permissions-examples"></a>
+
 <details>
 
 <summary style="font-weight: bold">🖼️ Persisted permissions examples (click for expand/collapse)</summary>
 
 |                                    List/Stream Permissions                                    |                                     List/Stream Documents                                     |
-|:---------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| :-------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/4109417d-df33-42f5-9df8-fb3516169aae" /> | <img src="https://github.com/user-attachments/assets/0efe0c21-56cf-4437-b9b6-e848cc0e269f" /> |
 
 </details>
@@ -520,7 +526,7 @@ There are two ways to instantiate a `DocumentFile`:
   Future<DocumentFile?> file() => DocumentFile(uri: 'path/to/file.jpg').get();
   ///Or you can use static method fromUri
   Future<DocumentFile?> file() => DocumentFile.fromUri('path/to/file.jpg');
-  
+
   /// If directory doesn't exist, it will create all directories in the path.
   Future<DocumentFile?> dir() => DocumentFile(uri: 'path/to/some/directory/notCreatedYet').get();
   ///Or you can use static method fromUri
@@ -538,33 +544,33 @@ Like `open`, `share`, `saveTo` methods. All methods are called through Activity 
   the system will show a dialog to choose the app to open with.
   Action can be performed only on file & file must exist.
 
-    * `title` parameter is optional, and not working on all devices, depends on the system.
+  - `title` parameter is optional, and not working on all devices, depends on the system.
 
-      ```dart
-      Future<bool> openFile(DocumentFile file) => file.open(title: 'Open with:'); //or file.open();
-      ```
+    ```dart
+    Future<bool> openFile(DocumentFile file) => file.open(title: 'Open with:'); //or file.open();
+    ```
 
 - `share` `📄` Share the file with other apps.
 
-    * `title` parameter is optional, and not working on all devices, depends on the system.
+  - `title` parameter is optional, and not working on all devices, depends on the system.
 
-      ```dart
-      Future<bool> shareFile(DocumentFile file) => file.share(title: 'Share with:'); //or file.share();
-      ```
+    ```dart
+    Future<bool> shareFile(DocumentFile file) => file.share(title: 'Share with:'); //or file.share();
+    ```
 
 - `saveTo` `📄` Save the file to the selected directory.
 
   You can specify the initial directory to start from, whether to show only local directories or not,
   and delete the original file after saving. After saving, the method returns the saved `DocumentFile`.
 
-    ```dart
-    Future<DocumentFile?> saveFile(DocumentFile file) =>
-        file.saveTo(
-          initDir: 'content uri to start from', //optional
-          localOnly: true,
-          deleteSource: true,
-        );
-    ```
+  ```dart
+  Future<DocumentFile?> saveFile(DocumentFile file) =>
+      file.saveTo(
+        initDir: 'content uri to start from', //optional
+        localOnly: true,
+        deleteSource: true,
+      );
+  ```
 
 #### **DocumentFile Events / Stream methods**
 
@@ -578,10 +584,10 @@ if it's a file, you can read it via stream as bytes or string.
   Can be used only on file & file must exist.
   You can specify the encoding of the file content, buffer size or set the start position to read from.
 
-    ```dart
-    Stream<String> readAsString(DocumentFile file) =>
-        file.readAsString(charset: 'UTF-8', bufferSize: 1024, start: 0);
-    ```
+  ```dart
+  Stream<String> readAsString(DocumentFile file) =>
+      file.readAsString(charset: 'UTF-8', bufferSize: 1024, start: 0);
+  ```
 
 <a name="documentfile-read-as-bytes"></a>
 
@@ -590,10 +596,10 @@ if it's a file, you can read it via stream as bytes or string.
   Can be used only on file & file must exist.
   You can specify the buffer size or set the start position to read from.
 
-    ```dart
-    Stream<Uint8List> readAsBytes(DocumentFile file) =>
-        file.readAsBytes(bufferSize: (1024 * 8), start: 0);
-    ```
+  ```dart
+  Stream<Uint8List> readAsBytes(DocumentFile file) =>
+      file.readAsBytes(bufferSize: (1024 * 8), start: 0);
+  ```
 
 <a name="list-documents-stream"></a>
 
@@ -603,10 +609,10 @@ if it's a file, you can read it via stream as bytes or string.
   You can specify the mimeTypes & extensions filter, to filter the documents by type, or filter documents by string in
   name.
 
-    ```dart
-    Stream<DocumentFile> listDocumentsStream(DocumentFile dir) =>
-        dir.listDocumentsStream(mimeTypes: ['application/pdf'], extensions: ['pdf', '.docx'], nameContains: 'doc_');
-    ```
+  ```dart
+  Stream<DocumentFile> listDocumentsStream(DocumentFile dir) =>
+      dir.listDocumentsStream(mimeTypes: ['application/pdf'], extensions: ['pdf', '.docx'], nameContains: 'doc_');
+  ```
 
 #### **DocumentFile Action methods**
 
@@ -617,29 +623,28 @@ and can be performed in the background (with isolates or WorkManager).
 
   Returns [PersistedPermission](#persistedpermission-class) instance or `null` if there are no persisted permissions.
 
-    ```dart
-    Future<PersistedPermission?> getPermissions(DocumentFile file) => file.permissions();
-    ```
+  ```dart
+  Future<PersistedPermission?> getPermissions(DocumentFile file) => file.permissions();
+  ```
 
 - `read` `📄` Read the entire file content as bytes.
 
   Can be used only on file & file must exist.
 
-    ```dart
-    Future<Uint8List> readBytes(DocumentFile file) => file.read();
-    ```
+  ```dart
+  Future<Uint8List> readBytes(DocumentFile file) => file.read();
+  ```
 
   ℹ️ If file is big, it's better to use stream-based method [readAsBytes](#documentfile-read-as-bytes).
-
 
 - `createDirectory` `📁` Create a new subdirectory with the specified name.
 
   Can be used only on directory & directory must exist & has write permission & flag `canCreate` is `true`.
   Returns the created `DocumentFile` directory.
 
-    ```dart
-    Future<DocumentFile?> createDir(DocumentFile dir) => dir.createDirectory('new_directory');
-    ```
+  ```dart
+  Future<DocumentFile?> createDir(DocumentFile dir) => dir.createDirectory('new_directory');
+  ```
 
 - `createFile` `📁` Create a new file with the specified name & content in the directory.
 
@@ -650,15 +655,15 @@ and can be performed in the background (with isolates or WorkManager).
   Example: `.txt` -> `docman_file_18028.txt`.
   Returns the created `DocumentFile` file.
 
-    ```dart
-    /// Create a new file with the specified name & String content in the directory.
-    Future<DocumentFile?> createFile(DocumentFile dir) =>
-        dir.createFile(name: '.txt', content: 'Hello World!');
-    
-    /// Create a new file with the specified name & bytes content in the directory.
-    Future<DocumentFile?> createFileFromBytes(DocumentFile dir) =>
-        dir.createFile(name: 'test Document.pdf', bytes: Uint8List.fromList([1, 2, 3, 4, 5]));
-    ```
+  ```dart
+  /// Create a new file with the specified name & String content in the directory.
+  Future<DocumentFile?> createFile(DocumentFile dir) =>
+      dir.createFile(name: '.txt', content: 'Hello World!');
+
+  /// Create a new file with the specified name & bytes content in the directory.
+  Future<DocumentFile?> createFileFromBytes(DocumentFile dir) =>
+      dir.createFile(name: 'test Document.pdf', bytes: Uint8List.fromList([1, 2, 3, 4, 5]));
+  ```
 
 - `listDocuments` `📁` List the documents in the directory.
 
@@ -666,14 +671,13 @@ and can be performed in the background (with isolates or WorkManager).
   You can specify the mimeTypes & extensions filter, to filter the documents by type, or filter documents by string in
   name.
 
-    ```dart
-    Future<List<DocumentFile>> listDocuments(DocumentFile dir) =>
-        dir.listDocuments(mimeTypes: ['application/pdf'], extensions: ['pdf', '.docx'], nameContains: 'doc_');
-    ```
+  ```dart
+  Future<List<DocumentFile>> listDocuments(DocumentFile dir) =>
+      dir.listDocuments(mimeTypes: ['application/pdf'], extensions: ['pdf', '.docx'], nameContains: 'doc_');
+  ```
 
   ℹ️ This method returns all documents in the directory, if list has many items,
   it's better to use stream-based method [listDocumentsStream](#list-documents-stream).
-
 
 - `find` `📁` Find the document in the directory by name.
 
@@ -681,9 +685,9 @@ and can be performed in the background (with isolates or WorkManager).
   Search through `listDocuments` for the first document exact matching the given name. Returns null when no matching
   document is found.
 
-    ```dart
-    Future<DocumentFile?> findDocument(DocumentFile dir) => dir.find('file_name.jpg');
-    ```
+  ```dart
+  Future<DocumentFile?> findDocument(DocumentFile dir) => dir.find('file_name.jpg');
+  ```
 
 - `delete` `📁` `📄` Delete the file or directory. Can be used on both file & directory.
 
@@ -691,22 +695,24 @@ and can be performed in the background (with isolates or WorkManager).
   If the document is a directory, it will delete all content recursively.
   Returns `true` if the document was deleted.
 
-    ```dart
-    Future<bool> deleteFile(DocumentFile file) => file.delete();
-    Future<bool> deleteDir(DocumentFile dir) => dir.delete();
-    ```
+  ```dart
+  Future<bool> deleteFile(DocumentFile file) => file.delete();
+  Future<bool> deleteDir(DocumentFile dir) => dir.delete();
+  ```
+
 - `cache` `📄` Copy the file to the cache directory (external if available, internal otherwise).
 
   If file with same name already exists in cache, it will be overwritten.
   Works only if the document exists & has permission to read.
   Returns `File` instance of the cached file.
 
-    ```dart
+  ```dart
   /// For all types of files
-    Future<File?> cacheFile(DocumentFile file) => file.cache();
+  Future<File?> cacheFile(DocumentFile file) => file.cache();
   /// If file is image (jpg, png, webp) you can specify the quality of the image
-    Future<File?> cacheImage(DocumentFile file) => file.cache(imageQuality: 70);
-    ```
+  Future<File?> cacheImage(DocumentFile file) => file.cache(imageQuality: 70);
+  ```
+
 - `copyTo` `📄` Copy the file to the specified directory.
 
   File must exist & have flag `canRead` set to `true`.
@@ -719,7 +725,7 @@ and can be performed in the background (with isolates or WorkManager).
   ///Copy file to the the directory `DocumentFile` instance with persisted permission uri
   Future<DocumentFile?> copyFile(DocumentFile file) =>
       file.copyTo('content://com.android.externalstorage.documents/tree/primary%3ADocMan', name: 'my new file copy');
-  
+
   ///Copy file to the the local app directory `Directory.path`
   Future<DocumentFile?> copyFileToLocalDir(DocumentFile file) =>
       file.copyTo('/data/user/0/devdf.plugins.docman_example/app_flutter/myDocs', name: 'test_file.txt');
@@ -736,15 +742,15 @@ and can be performed in the background (with isolates or WorkManager).
   Returns the `DocumentFile` instance of the moved file.
   After moving the file, the original file will be deleted.
 
-    ```dart
+  ```dart
   ///Move file to the the directory `DocumentFile` instance with persisted permission uri
   Future<DocumentFile?> moveFile(DocumentFile file) =>
-      file.moveTo('content://com.android.externalstorage.documents/tree/primary%3ADocMan', name: 'moved file name');
-  
+    file.moveTo('content://com.android.externalstorage.documents/tree/primary%3ADocMan', name: 'moved file name');
+
   ///Move file to the the local app directory `Directory.path`
   Future<DocumentFile?> moveFileToLocalDir(DocumentFile file) =>
-      file.moveTo('/data/user/0/devdf.plugins.docman_example/cache/TempDir', name: 'moved_file.txt');
-    ```
+    file.moveTo('/data/user/0/devdf.plugins.docman_example/cache/TempDir', name: 'moved_file.txt');
+  ```
 
 <a name="documentfile-action-thumbnail"></a>
 
@@ -757,9 +763,9 @@ and can be performed in the background (with isolates or WorkManager).
   not available.
   Commonly used for images, videos, pdfs.
 
-    ```dart
-    Future<DocumentThumbnail?> thumbnail(DocumentFile file) => file.thumbnail(width: 256, height: 256, quality: 70);
-    ```
+  ```dart
+  Future<DocumentThumbnail?> thumbnail(DocumentFile file) => file.thumbnail(width: 256, height: 256, quality: 70);
+  ```
 
 > [!NOTE]
 > ⚠️ Sometimes due to different document providers, thumbnail can have bigger dimensions, than requested.
@@ -774,9 +780,9 @@ and can be performed in the background (with isolates or WorkManager).
   Same as `thumbnail` method, but returns the thumbnail image as a `File` instance, saved in the cache directory.
   First it will try to save to external cache directory, if not available, then to internal cache directory.
 
-    ```dart
-    Future<File?> thumbnailFile(DocumentFile file) => file.thumbnailFile(width: 192, height: 192, webp: true);
-    ```
+  ```dart
+  Future<File?> thumbnailFile(DocumentFile file) => file.thumbnailFile(width: 192, height: 192, webp: true);
+  ```
 
 #### 🧩 **DocumentThumbnail class**
 
@@ -808,6 +814,7 @@ Information about currently (temporarily) unsupported methods in the plugin.
 > so it's better to use `copy` & `delete` actions instead.
 
 ---
+
 <a name="documentfile-examples"></a>
 
 <details>
@@ -815,11 +822,11 @@ Information about currently (temporarily) unsupported methods in the plugin.
 <summary style="font-weight: bold">🖼️ DocumentFile examples (click for expand/collapse)</summary>
 
 |                                      Local file activity                                      |                                      Picked File actions                                      |
-|:---------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| :-------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/a5cb398c-1a9f-4aab-91cb-112e31c4565c" /> | <img src="https://github.com/user-attachments/assets/fd510728-9601-47ad-9e14-b183e5bb2f95" /> |
 
 |                                   Picked Directory actions                                    |                                    Local Directory actions                                    |
-|:---------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| :-------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/f9e851c0-5e49-4a05-a122-909c188e530b" /> | <img src="https://github.com/user-attachments/assets/4c5158f3-b694-4ec0-8fb0-72a58bd61986" /> |
 
 </details>
@@ -851,27 +858,28 @@ that will be accessible by other apps. You can customize it, and set the permiss
    You can find the example file in the [plugin's example app](/example/assets/provider.json).
 2. Update the `pubspec.yaml` file.
 
-    ```yaml
-    flutter:
-      assets:
-        - assets/provider.json
-    ```
+   ```yaml
+   flutter:
+     assets:
+       - assets/provider.json
+   ```
 
 #### **DocumentsProvider configuration**
 
 All configuration is stored in the `assets/provider.json` file.
 
 > [!IMPORTANT]
-> Once you set up the provider, ***do not change any parameter dynamically***,
+> Once you set up the provider, **_do not change any parameter dynamically_**,
 > otherwise the provider will not work correctly.
 
 - `rootPath` The name of the directory where your public files are stored.
-  This ***parameter is required***. This is an entry point for the provider.
+  This **_parameter is required_**. This is an entry point for the provider.
   Directory will be created automatically, if it doesn't exist.
   Plugin first will try to create the directory in the external storage (app files folder), if not available,
   then in the internal storage (app data folder - which is `app_flutter/`)
 
   Example values: `public_documents`, `provider`, `nested/public/path`.
+
   ```json
   {
     "rootPath": "public_documents"
@@ -902,7 +910,9 @@ All configuration is stored in the `assets/provider.json` file.
     "mimeTypes": ["image/*", "video/*"]
   }
   ```
+
 - `extensions` - List of file extensions that the provider supports. Set this to null to show provider in all scenarios.
+
   ```json
   {
     "extensions": ["pdf", ".docx"]
@@ -915,12 +925,11 @@ All configuration is stored in the `assets/provider.json` file.
 > [!NOTE]
 > If you set `mimeTypes` for example to `["image/*"]`, when `System File Picker UI` is opened by any other
 > app, which also wants to get images, it will show your provider in list of providers. But remember if you set
-`mimeTypes` or `extensions` to specific types, but you store different types of files in the directory,
+> `mimeTypes` or `extensions` to specific types, but you store different types of files in the directory,
 > they will be also visible.
 
-> [!IMPORTANT]
-> **In short:** if you set `mimeTypes` or `extensions`,
-***you have to store only files of these types in the provider directory***.
+> [!IMPORTANT] > **In short:** if you set `mimeTypes` or `extensions`,
+> **_you have to store only files of these types in the provider directory_**.
 
 - `showInSystemUI` - Whether to show the provider in the System UI. If set to `false`, the provider will be hidden.
   This is working only on Android 10 (Api 29) and above, on lower versions it will always be shown.
@@ -956,7 +965,7 @@ Section for directories in the `provider.json` file:
     "copy": true
   }
 }
-``` 
+```
 
 🏳️ **Supported flags for files:**
 
@@ -970,10 +979,10 @@ Section for directories in the `provider.json` file:
 - `write` - Whether documents in the provider can be modified.
 - `copy` - Whether documents in the provider can be copied.
 - `thumbnail` - Indicates that documents can be represented as a thumbnails.
-    - The provider supports generating custom thumbnails for videos and PDFs.
-    - Thumbnails for images are generated by system.
-    - All thumbnails, generated by the provider, are cached in the `thumbs` directory under the `docManMedia` directory.
-    - You can clear the thumbnail cache using `DocMan.dir.clearCache()`.
+  - The provider supports generating custom thumbnails for videos and PDFs.
+  - Thumbnails for images are generated by system.
+  - All thumbnails, generated by the provider, are cached in the `thumbs` directory under the `docManMedia` directory.
+  - You can clear the thumbnail cache using `DocMan.dir.clearCache()`.
 
 Section for files in the `provider.json` file:
 
@@ -1001,6 +1010,7 @@ or short version, if all actions are supported:
 ```
 
 <a name="provider-json-example"></a>
+
 <details>
 
 <summary style="font-weight: bold">🗒️ Full Example of the `provider.json` (click for expand/collapse)</summary>
@@ -1010,13 +1020,8 @@ or short version, if all actions are supported:
   "rootPath": "nested/provider_folder",
   "providerName": "DocMan Example",
   "providerSubtitle": "Documents & media files",
-  "mimeTypes": [
-    "image/*"
-  ],
-  "extensions": [
-    ".pdf",
-    "mp4"
-  ],
+  "mimeTypes": ["image/*"],
+  "extensions": [".pdf", "mp4"],
   "showInSystemUI": true,
   "supportRecent": true,
   "supportSearch": true,
@@ -1042,19 +1047,18 @@ or short version, if all actions are supported:
 
 </details>
 
-
-
 <a name="documents-provider-examples"></a>
+
 <hr />
 <details>
 <summary style="font-weight: bold">🖼️ DocumentsProvider examples (click for expand/collapse)</summary>
 
 |                             Side menu view in System File Manager                             |                                     Visibility in Recents                                     |
-|:---------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| :-------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/9d365397-3050-46b8-b0c9-a1f4a4956c82" /> | <img src="https://github.com/user-attachments/assets/5af73262-1991-424b-b6dc-45785c154a95" /> |
 
 |                               DocumentsProvider through Intent                                |                              DocumentsProvider via File Manager                               |
-|:---------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| :-------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/c4481d37-1e73-4e13-a3e2-5edfa8936f8a" /> | <img src="https://github.com/user-attachments/assets/4c66fa0c-15bc-4df0-b754-0831700e57e1" /> |
 
 </details>
@@ -1088,7 +1092,7 @@ Common exceptions for all channels:
 - `PickerMaxLimitException` Thrown for `DocMan.pick.visualMedia()` method.
   When `limit` parameter is greater than max allowed by the platform,
   currently it
-  uses [MediaStore.getPickImagesMaxLimit](https://developer.android.com/reference/android/provider/MediaStore#getPickImagesMaxLimit())
+  uses [MediaStore.getPickImagesMaxLimit](<https://developer.android.com/reference/android/provider/MediaStore#getPickImagesMaxLimit()>)
   on supported devices (Android 11 & above), otherwise it forces
   the limit to 100.
 - `PickerCountException` Thrown when you set picker parameter `limitResultCancel` to `true`.

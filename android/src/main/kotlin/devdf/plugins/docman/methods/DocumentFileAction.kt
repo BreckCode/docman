@@ -115,36 +115,53 @@ class DocumentFileAction(
     }
 
     private fun createFile() {
-        val (baseName, extension) = call.argument<String>("name")?.split(".")?.let { list ->
-            (list.firstOrNull()?.takeIf { it.isNotEmpty() }?.asFileName()
-                ?: DocManFiles.genFileName()) to list.getOrNull(1)
-        } ?: (DocManFiles.genFileName() to null)
+        val fileNameArgument = call.argument<String>("name")?.trim()
+        val (displayName, extension) = resolveFileName(fileNameArgument) ?: return
 
-        //1. Return error if extension is not provided
-        if (extension.isNullOrEmpty()) return onError("Extension is required in file name")
-        //2. Detect the mime type
-        //TODO: what if user wants to use custom extension or mime type? Example: '.bck' -> 'application/backup'
-        val mimeType = DocManMimeType.fromExtension(extension)
+        //1. Detect the mime type
+        val mimeType = DocManMimeType.fromExtension(extension.lowercase())
             ?: return onError("Cannot detect mime type for extension $extension")
-        //3. Get the content
+        //2. Get the content
         val content = call.argument<ByteArray>("content") ?: return onError("Content is required")
-        //4. Check if directory is not app directory and can't create file
+        //3. Check if directory is not app directory and can't create file
         if (!doc.isAppDir(plugin.context) && !doc.canCreate(plugin.context)) {
             return onError("Cannot create file in this directory")
         }
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                //5. Create the file
-                val resultDoc = doc.createFile(mimeType, baseName)
-                //6. Write the content
+                //4. Create the file
+                val resultDoc = doc.createFile(mimeType, displayName)
+                //5. Write the content
                 resultDoc?.writeContent(content, plugin.context)
-                //7. Return the result
+                //6. Return the result
                 success(resultDoc?.toMapResult(plugin.context))
             } catch (e: Exception) {
                 onError(e.message)
             }
         }
+    }
+
+    private fun resolveFileName(name: String?): Pair<String, String>? {
+        val rawName = name?.takeIf { it.isNotEmpty() }
+            ?: run {
+                onError("Invalid or empty file name")
+                return null
+            }
+
+        val sanitizedName = if (doc.isAppDir(plugin.context)) rawName.asFileName() else rawName
+        val lastDotIndex = sanitizedName.lastIndexOf('.')
+
+        if (lastDotIndex == -1 || lastDotIndex == sanitizedName.lastIndex) {
+            onError("Extension is required in file name")
+            return null
+        }
+
+        val extension = sanitizedName.substring(lastDotIndex + 1)
+        val baseName = sanitizedName.substring(0, lastDotIndex)
+            .takeIf { it.isNotEmpty() } ?: DocManFiles.genFileName()
+
+        return "$baseName.$extension" to extension
     }
 
 

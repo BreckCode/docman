@@ -33,7 +33,7 @@ class DocManEvents(private val plugin: DocManPlugin) : EventsBase {
             return
         }
         //4. Setting scope block
-        block = when (DocManMethod.fromMethodName(method)) {
+        val eventBlock = when (DocManMethod.fromMethodName(method)) {
             DocManMethod.DocumentFileEvent -> DocumentFileEvent(plugin, call, eventSink)
             DocManMethod.PermissionsEvent -> PermissionsEvents(plugin, call, eventSink)
             //Return not implemented error
@@ -42,13 +42,16 @@ class DocManEvents(private val plugin: DocManPlugin) : EventsBase {
                 return
             }
         }
+        block = eventBlock
 
         //5. Setting the job
-        job = CoroutineScope(Dispatchers.IO).launch { block!!.onListen() }
+        job = CoroutineScope(Dispatchers.IO).launch { eventBlock.onListen() }
         //6. Setting the job completion
         job?.invokeOnCompletion {
-            job = null
-            block = null
+            if (block == eventBlock) {
+                job = null
+                block = null
+            }
         }
     }
 

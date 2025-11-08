@@ -36,7 +36,9 @@ import java.io.FileNotFoundException
 fun DocumentFile.toMapResult(context: Context): Map<String, Any?>? {
     return when {
         isDirectory || isFile -> mapOf(
-            "name" to name,
+            "name" to getComputedName(context),
+            "displayName" to name,
+            "fileName" to getComputedName(context),
             "type" to when {
                 isDirectory -> "directory"
                 else -> type
@@ -276,6 +278,33 @@ fun DocumentFile.getFileExtension(context: Context): String {
  */
 fun DocumentFile.nameContains(str: String): Boolean =
     name?.contains(str, ignoreCase = true) ?: str.isEmpty()
+
+/** Get the computed name of the [DocumentFile] that preserves file extensions
+ *
+ * This method addresses the issue where some SAF providers (like Termux) strip file extensions
+ * from the display name. It computes a proper filename that includes the extension when needed.
+ *
+ * @param context The context of the application
+ * @return The computed name with extension preserved when possible
+ */
+fun DocumentFile.getComputedName(context: Context): String {
+    val displayName = name ?: return "unknown"
+    
+    // If it's a directory, return the display name as-is
+    if (isDirectory) return displayName
+    
+    // If the display name already has an extension, return it as-is
+    if (displayName.contains('.')) return displayName
+    
+    // For files without extension in display name, try to compute the extension from MIME type
+    val extension = getFileExtension(context)
+
+    return if (extension.isNotEmpty()) {
+        "$displayName.$extension"
+    } else {
+        displayName
+    }
+}
 
 /** Get the name of the [DocumentFile] as a file name
  *
