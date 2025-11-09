@@ -64,6 +64,18 @@ extension DocumentFileActionsExt on DocumentFile {
       DocumentFileMethods(this)
           .createFile(name: name, content: content, bytes: bytes);
 
+  /// Overwrite the content of the file.
+  ///
+  /// Only works if the current document is a file, exists, and has permission to write.
+  ///
+  /// - [content] optional string content that will be encoded as UTF-8.
+  /// - [bytes] optional raw bytes to write into the file. When both [content] and [bytes]
+  /// are provided, [bytes] will be used.
+  ///
+  /// Returns [DocumentFile] of the updated file, or null if something went wrong.
+  Future<DocumentFile?> writeFile({String? content, Uint8List? bytes}) =>
+      DocumentFileMethods(this).writeFile(content: content, bytes: bytes);
+
   /// List the documents in the directory.
   ///
   /// Can be used only if the current document is a directory.

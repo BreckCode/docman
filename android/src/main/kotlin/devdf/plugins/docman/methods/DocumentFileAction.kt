@@ -22,6 +22,7 @@ import devdf.plugins.docman.extensions.toDocumentFile
 import devdf.plugins.docman.extensions.toMapResult
 import devdf.plugins.docman.extensions.toUri
 import devdf.plugins.docman.extensions.writeContent
+import devdf.plugins.docman.extensions.writeFile
 import devdf.plugins.docman.utils.BitmapCompressFormat
 import devdf.plugins.docman.utils.DocManFiles
 import devdf.plugins.docman.utils.DocManMimeType
@@ -60,6 +61,7 @@ class DocumentFileAction(
             "read" -> readDocument()
             "createDirectory" -> createDirectory()
             "createFile" -> createFile()
+            "write" -> writeFile()
             "list" -> listDocuments()
             "find" -> findFile()
             "cache" -> cacheDocument()
@@ -162,6 +164,23 @@ class DocumentFileAction(
             .takeIf { it.isNotEmpty() } ?: DocManFiles.genFileName()
 
         return "$baseName.$extension" to extension
+    }
+
+    private fun writeFile() {
+        if (!doc.isFile) return onError("Document is not a file")
+        if (!doc.exists()) return onError("Document does not exist")
+        if (!doc.canWrite()) return onError("Document is not writable")
+
+        val content = call.argument<ByteArray>("content") ?: return onError("Content is required")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                doc.writeFile(content, plugin.context)
+                success(doc.toMapResult(plugin.context))
+            } catch (e: Exception) {
+                onError(e.message)
+            }
+        }
     }
 
 

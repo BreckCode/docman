@@ -387,14 +387,20 @@ class DocManFiles {
             return try {
                 //1. Check if document is a directory
                 if (doc.isDirectory) {
-                    doc.listFiles().forEach { deleteDocumentRecursive(it, context) }
+                    // Delete all children first and track if all deletions were successful
+                    val childrenDeleted = doc.listFiles().all { child ->
+                        deleteDocumentRecursive(child, context)
+                    }
+                    // If any child failed to delete, return false
+                    if (!childrenDeleted) return false
                 }
                 //2. Check if document is initialized as file
                 if (doc.isAppFile(context)) {
                     doc.uri.toFile().delete()
                 } else {
                     //3. Delete the document if it can be deleted
-                    doc.canDelete(context) && doc.delete()
+                    if (!doc.canDelete(context)) return false
+                    doc.delete()
                 }
             } catch (_: Exception) {
                 false

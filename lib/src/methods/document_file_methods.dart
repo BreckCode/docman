@@ -132,6 +132,23 @@ class DocumentFileMethods {
     return result != null ? DocumentFile.fromMap(Map.from(result)) : null;
   }
 
+  /// Overwrite the document content.
+  Future<DocumentFile?> writeFile({
+    String? content,
+    Uint8List? bytes,
+  }) async {
+    assert(doc.exists, 'DocumentFile must exist, before calling write method.');
+    assert(doc.isFile,
+        'DocumentFile must be a file, before calling write method.');
+    assert(
+        content != null || bytes != null, 'Content or bytes must be provided.');
+    if (!doc.canWrite) return null;
+    final args = _args('write');
+    args['content'] = bytes ?? Uint8List.fromList(content!.codeUnits);
+    final result = await _actionResult<Map<dynamic, dynamic>>(args);
+    return result != null ? DocumentFile.fromMap(Map.from(result)) : null;
+  }
+
   /// Get list of documents in the directory.
   Future<List<DocumentFile>> list({
     List<String> mimeTypes = const [],

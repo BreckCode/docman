@@ -402,6 +402,33 @@ suspend fun DocumentFile.writeContent(
     context: Context
 ) = DocManFiles.writeContentToDocumentFile(this, content, context)
 
+/** Overwrite an existing file represented by this [DocumentFile].
+ *
+ *  Must be called from a coroutine.
+ *
+ * @param content The content to write into the file
+ * @param context The context of the application
+ * @return The same [DocumentFile] instance after the write operation completes
+ * @throws IllegalStateException if the document is not an existing file
+ * or if it cannot be written to
+ *
+ * @see writeContent
+ */
+suspend fun DocumentFile.writeFile(
+    content: ByteArray,
+    context: Context
+): DocumentFile {
+    if (!isFile || !exists()) {
+        throw IllegalStateException("DocumentFile does not reference an existing file.")
+    }
+    if (!canWrite() && !isWritable(context)) {
+        throw IllegalStateException("DocumentFile is not writable.")
+    }
+
+    writeContent(content, context)
+    return this
+}
+
 /** Copy the file [DocumentFile] to directory [DocumentFile].
  *
  *  Must be called from a coroutine.
