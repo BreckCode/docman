@@ -120,9 +120,9 @@ class DocumentFileAction(
         val fileNameArgument = call.argument<String>("name")?.trim()
         val (displayName, extension) = resolveFileName(fileNameArgument) ?: return
 
-        //1. Detect the mime type
+        //1. Detect the mime type, use default if not detected
         val mimeType = DocManMimeType.fromExtension(extension.lowercase())
-            ?: return onError("Cannot detect mime type for extension $extension")
+            ?: "application/octet-stream"
         //2. Get the content
         val content = call.argument<ByteArray>("content") ?: return onError("Content is required")
         //3. Check if directory is not app directory and can't create file
