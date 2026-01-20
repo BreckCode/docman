@@ -118,7 +118,6 @@ class DocumentFileMethods {
     assert(doc.isDirectory,
         'DocumentFile must be a directory, before calling createFile method.');
     assert(name.isNotEmpty, 'Name must not be empty.');
-    assert(name.contains('.'), 'Name must contain an extension.');
     assert(
         content != null || bytes != null, 'Content or bytes must be provided.');
     //If document canCreate is false, then return null

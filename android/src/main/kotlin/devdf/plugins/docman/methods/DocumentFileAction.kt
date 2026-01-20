@@ -1,6 +1,7 @@
 package devdf.plugins.docman.methods
 
 import android.util.Size
+import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import devdf.plugins.docman.DocManPlugin
 import devdf.plugins.docman.definitions.ActionMethodBase
@@ -154,16 +155,21 @@ class DocumentFileAction(
         val sanitizedName = if (doc.isAppDir(plugin.context)) rawName.asFileName() else rawName
         val lastDotIndex = sanitizedName.lastIndexOf('.')
 
-        if (lastDotIndex == -1 || lastDotIndex == sanitizedName.lastIndex) {
-            onError("Extension is required in file name")
-            return null
+        // Allow files without extensions
+        val extension = if (lastDotIndex > 0 && lastDotIndex != sanitizedName.lastIndex) {
+            sanitizedName.substring(lastDotIndex + 1)
+        } else {
+            "" // No extension
         }
+        
+        val baseName = if (lastDotIndex > 0) {
+            sanitizedName.substring(0, lastDotIndex)
+        } else {
+            sanitizedName
+        }.takeIf { it.isNotEmpty() } ?: DocManFiles.genFileName()
 
-        val extension = sanitizedName.substring(lastDotIndex + 1)
-        val baseName = sanitizedName.substring(0, lastDotIndex)
-            .takeIf { it.isNotEmpty() } ?: DocManFiles.genFileName()
-
-        return "$baseName.$extension" to extension
+        val displayName = if (extension.isNotEmpty()) "$baseName.$extension" else baseName
+        return displayName to extension
     }
 
     private fun writeFile() {
@@ -238,9 +244,10 @@ class DocumentFileAction(
     private fun copyTo() {
         //1. Validate the source document & destination directory
         val destDoc = validateCopyMove() ?: return
-        //2. Check new name
-        val name = call.argument<String>("name")?.substringBefore(".")?.asFileName()
-            ?: doc.getBaseName()
+        //2. Check new name - preserve full filename with extension
+        val name = call.argument<String>("name")?.trim()?.takeIf { it.isNotEmpty() }?.let {
+            if (destDoc.isAppDir(plugin.context)) it.asFileName() else it
+        }
         //3. Copy document to destination directory
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -255,9 +262,10 @@ class DocumentFileAction(
     private fun moveTo() {
         //1. Validate the source document & destination directory
         val destDoc = validateCopyMove() ?: return
-        //2. Check new name
-        val name = call.argument<String>("name")?.substringBefore(".")?.asFileName()
-            ?: doc.getBaseName()
+        //2. Check new name - preserve full filename with extension
+        val name = call.argument<String>("name")?.trim()?.takeIf { it.isNotEmpty() }?.let {
+            if (destDoc.isAppDir(plugin.context)) it.asFileName() else it
+        }
         //3. Move document to destination directory
         CoroutineScope(Dispatchers.IO).launch {
             try {

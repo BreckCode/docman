@@ -13,7 +13,9 @@ import androidx.documentfile.provider.DocumentFile
 import devdf.plugins.docman.extensions.activityUri
 import devdf.plugins.docman.extensions.canDelete
 import devdf.plugins.docman.extensions.getBaseName
+import devdf.plugins.docman.extensions.getComputedName
 import devdf.plugins.docman.extensions.getFileExtension
+import devdf.plugins.docman.extensions.isAppDir
 import devdf.plugins.docman.extensions.isAppFile
 import devdf.plugins.docman.extensions.isImage
 import devdf.plugins.docman.extensions.isMediaMimeType
@@ -193,9 +195,27 @@ class DocManFiles {
         ): DocumentFile? = withContext(Dispatchers.IO) {
             //1. Create the target file
             var targetDoc: DocumentFile? = null
-            //2. Copy the file
+            //2. Determine the proper file name with extension
+            val fullName = name ?: doc.getComputedName(context)
+
+            // For app directories (file://), use baseName to avoid double extension
+            // For SAF providers (content://), use fullName to preserve extension
+            val displayName = if (targetDir.isAppDir(context)) {
+                // Extract baseName for app directories to prevent double extension
+                val lastDotIndex = fullName.lastIndexOf('.')
+                if (lastDotIndex > 0 && lastDotIndex != fullName.lastIndex) {
+                    fullName.substring(0, lastDotIndex)
+                } else {
+                    fullName
+                }
+            } else {
+                // Use fullName for SAF providers to preserve extension
+                fullName
+            }
+
+            //3. Copy the file
             runCatching {
-                targetDoc = targetDir.createFile(doc.type!!, name ?: doc.getBaseName())?.apply {
+                targetDoc = targetDir.createFile(doc.type!!, displayName)?.apply {
                     context.contentResolver.openInputStream(doc.uri)?.use { inputStream ->
                         context.contentResolver.openOutputStream(this.uri)?.use { outputStream ->
                             inputStream.copyTo(outputStream)
@@ -203,7 +223,7 @@ class DocManFiles {
                     }
                 }
                 targetDoc
-                //3. Delete the target file if copy failed
+                //4. Delete the target file if copy failed
             }.getOrElse { e -> targetDoc?.delete().let { throw e } }
         }
 
@@ -347,7 +367,7 @@ class DocManFiles {
 
         /** Write content as [ByteArray] to a [Uri] */
         private fun writeContentToUri(content: ByteArray, to: Uri, context: Context) {
-            context.contentResolver.openOutputStream(to)?.use { outputStream ->
+            context.contentResolver.openOutputStream(to, "wt")?.use { outputStream ->
                 outputStream.write(content)
             } ?: throw IOException("Unable to open output stream for URI: $to")
 

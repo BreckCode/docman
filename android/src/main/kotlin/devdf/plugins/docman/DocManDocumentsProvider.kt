@@ -220,7 +220,20 @@ class DocManDocumentsProvider : DocumentsProvider() {
         val sourceFile = getFile(documentId!!)
         val sourceParentFile = sourceFile.parentFile
             ?: throw FileNotFoundException("Couldn't rename document '$documentId' as it has no parent")
-        val destFile = sourceParentFile.resolve(displayName)
+        
+        // Preserve extension if displayName doesn't have one and source file is not a directory
+        val finalDisplayName = if (!sourceFile.isDirectory && !displayName.contains('.')) {
+            val sourceExtension = sourceFile.extension
+            if (sourceExtension.isNotEmpty()) {
+                "$displayName.$sourceExtension"
+            } else {
+                displayName
+            }
+        } else {
+            displayName
+        }
+        
+        val destFile = sourceParentFile.resolve(finalDisplayName)
 
         try {
             if (!sourceFile.renameTo(destFile))
