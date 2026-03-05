@@ -57,22 +57,18 @@ class PermissionsAction(
                 ?: return onError("Cannot initialize document file, uri is invalid")
 
             doc.persistedPermissions(plugin.context)?.let { plugin.permissions.release(it) }
+            success(true)
         } catch (e: Exception) {
             onError(e.message)
-            return
-        } finally {
-            success(true)
         }
     }
 
     private fun releaseAll() {
         try {
             plugin.permissions.releaseAll()
+            success(true)
         } catch (e: Exception) {
             onError(e.message)
-            return
-        } finally {
-            success(true)
         }
     }
 

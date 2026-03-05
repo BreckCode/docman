@@ -71,7 +71,11 @@ class DocumentFileAction(
             "thumbnail" -> getThumbnail()
             "thumbnailFile" -> getThumbnail(true)
             "delete" -> CoroutineScope(Dispatchers.IO).launch {
-                success(doc.deleteDocument(plugin.context))
+                try {
+                    success(doc.deleteDocument(plugin.context))
+                } catch (e: Exception) {
+                    onError(e.message)
+                }
             }
 //            "rename" -> renameTo()
             else -> onError("Action $action is not supported")
