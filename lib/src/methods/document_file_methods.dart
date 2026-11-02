@@ -1,3 +1,4 @@
+import 'dart:convert' show utf8;
 import 'dart:io' show File;
 import 'dart:typed_data' show Uint8List;
 
@@ -5,6 +6,7 @@ import 'package:docman/docman.dart';
 import 'package:docman/src/channels/action_channel.dart';
 import 'package:docman/src/channels/activity_channel.dart';
 import 'package:docman/src/channels/events_channel.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/services.dart';
 
 /// A class that provides methods for a [DocumentFile].
@@ -125,7 +127,7 @@ class DocumentFileMethods {
     //1. Collect args
     final args = _args('createFile');
     args['name'] = name;
-    args['content'] = bytes ?? Uint8List.fromList(content!.codeUnits);
+    args['content'] = bytes ?? encodeContent(content!);
     //2. Call method
     final result = await _actionResult<Map<dynamic, dynamic>>(args);
     return result != null ? DocumentFile.fromMap(Map.from(result)) : null;
@@ -143,7 +145,7 @@ class DocumentFileMethods {
         content != null || bytes != null, 'Content or bytes must be provided.');
     if (!doc.canWrite) return null;
     final args = _args('write');
-    args['content'] = bytes ?? Uint8List.fromList(content!.codeUnits);
+    args['content'] = bytes ?? encodeContent(content!);
     final result = await _actionResult<Map<dynamic, dynamic>>(args);
     return result != null ? DocumentFile.fromMap(Map.from(result)) : null;
   }
@@ -371,6 +373,14 @@ class DocumentFileMethods {
 
   Future<T?> _activityResult<T>([dynamic args]) =>
       ActivityChannel.instance.call<T>('${_name}activity', args);
+
+  /// Encodes string [content] as UTF-8 bytes for the native side.
+  ///
+  /// `String.codeUnits` are UTF-16 code units; truncating them to bytes
+  /// corrupts every non-ASCII character, so always encode as UTF-8.
+  @visibleForTesting
+  static Uint8List encodeContent(String content) =>
+      Uint8List.fromList(utf8.encode(content));
 
   Future<T?> _actionResult<T>([dynamic args]) =>
       ActionChannel.instance.call<T>('${_name}action', args);
